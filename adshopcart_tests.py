@@ -8,4 +8,5 @@ class AdshopcartPositiveTests(unittest.TestCase):
     @staticmethod
     def test_AOS():
         methods.setUp()
+        methods.sign_up()
         methods.tearDown()
