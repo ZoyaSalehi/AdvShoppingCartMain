@@ -13,15 +13,28 @@ new_password = fake.password()
 email = fake.email()
 first_name = fake.first_name()
 last_name = fake.last_name()
-phonenum = fake.phone_number()
+
+init_phonenum = fake.phone_number()
+if len(init_phonenum)>10:
+    phonenum = init_phonenum[:10:]
+else:
+    phonenum = init_phonenum
+
 full_name = f'{first_name} {last_name}'
 address = fake.street_address()
 
-while len(fake.city())>9 or len(fake.city())==0 :
-    city = fake.city()
-
-short_city = city
+init_city = fake.city()
+if len(init_city)>10:
+    city = init_city[:10:]
+else:
+    city = init_city
 
 country = fake.current_country()
-state = fake.state()
+
+init_state = fake.state()
+if len(init_state)>10:
+    state = init_state[:10:]
+else:
+    state = init_state
+
 zip_code = fake.zipcode()
