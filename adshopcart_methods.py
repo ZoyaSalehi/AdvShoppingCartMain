@@ -50,6 +50,10 @@ def sign_up():
     driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").send_keys(locators.email)
     driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").send_keys(locators.new_password)
     driver.find_element(By.XPATH, "//input[@name='confirm_passwordRegisterPage']").send_keys(locators.new_password)
+    # driver.find_element(By.XPATH, "//input[@name='usernameRegisterPage']").clear()
+    # driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").clear()
+    # driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").clear()
+    # driver.find_element(By.XPATH, "//input[@name='confirm_passwordRegisterPage']").clear()
     # driver.find_element(By.XPATH, "//input[@name='usernameRegisterPage']").send_keys('ZoyaSalehi')
     # driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").send_keys('zoyasalehi@cctb.com')
     # driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").send_keys('Pass1234')
@@ -66,11 +70,20 @@ def sign_up():
     driver.find_element(By.XPATH, "//input[@name='postal_codeRegisterPage']").send_keys(locators.zip_code)
     driver.find_element(By.XPATH, "//input[@name='i_agree']").click()
     driver.find_element(By.ID, "register_btnundefined").click()
+    sleep(0.5)
 
-    if driver.find_element(By.LINK_TEXT, f"{locators.new_username}").is_displayed():
-        print("New User is successfully registered")
-    else:
-        tearDown()
+    if driver.current_url == "https://advantageonlineshopping.com/#/":
+        if driver.find_element(By.LINK_TEXT, f"{locators.new_username}").is_displayed():
+            print(f"New User {locators.new_username} is successfully registered")
+    # else:
+    #     print("User already exists")
+    #     while locators.counter < 3:
+    #         print(f'{locators.counter}')
+    #         locators.counter = + 1
+    #         sign_up()
+    #     print("Existing Username is entered 3 times, test is closed, check your code, try again")
+    #     tearDown()
+
 
 
     #print(driver.find_element(By.XPATH, "//label[@class ='center block smollMargin']").get_attribute('innerText'))
@@ -87,8 +100,8 @@ def sign_up():
 
 
 def check_full_name():
-    print(f'-------------------------~*~--------------------------')
-    print("Confirm if the user's Full Name is correctly captured in the Accounts Details")
+    print('-------------------------~*~--------------------------')
+    print(f"Confirm if the user's Fullname, ie. {locators.full_name} is correctly captured in the Accounts Details")
     driver.find_element(By.ID, "menuUserLink").click()
     assert driver.find_element(By.ID, "loginMiniTitle").is_displayed()
     #Select(driver.find_element(By.ID, "loginMiniTitle")).select_by_value('My account')
@@ -100,7 +113,7 @@ def check_full_name():
     assert driver.find_element(By.XPATH, "//div[@class='borderBox']//label")
     fullname = driver.find_element(By.XPATH, "//div[@class='borderBox']//label").get_attribute('innerText')
     if locators.full_name == fullname:
-        print("Yes, User's Full Name is correctly captured in the Accounts Details")
+        print("Yes, User's Fullname, ie. {locators.full_name} is correctly captured in the Accounts Details")
     #if driver.find_element(By.XPATH, f"//label[normalize - space(text()) = '{locators.full_name}']"):
     # if driver.find_element(By.XPATH, "//label[text()[normalize-space()='Zoya Salehi']]"):
     #     print("Full name is found in My Account")
@@ -128,7 +141,6 @@ def log_out():
     driver.find_element(By.XPATH, "(// label[@ translate='Sign_out'])[2]").click()
     sleep(0.5)
     assert driver.find_element(By.XPATH, "//span[@class='hi-user containMiniTitle ng-binding ng-hide']").get_attribute('innerText') == ''
-    print("User successfully log out")
     print("user successfully logged out")
 
 def delete_test_account():
