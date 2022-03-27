@@ -4,9 +4,9 @@ fake = Faker(locale=['en_CA', 'en_US'])
 
 app = "Advantage Online Shopping"
 aos_URL = "https://advantageonlineshopping.com/#/"
-#aos_homepage_title = f"\u00A0Advantage Shopping"
+aos_homepage_title = f"\u00A0Advantage Shopping"
 #aos_homepage_title = "&nbspAdvantage Shopping".replace('&nbsp', '')
-aos_homepage_title = " Advantage Shopping"
+#aos_homepage_title = " Advantage Shopping"
 aos_register_URL = "https://advantageonlineshopping.com/#/register"
 new_username = fake.user_name()
 new_password = fake.password()
@@ -44,3 +44,4 @@ else:
     state = init_state
 
 zip_code = fake.zipcode()
+counter = 0

@@ -50,6 +50,10 @@ def sign_up():
     driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").send_keys(locators.email)
     driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").send_keys(locators.new_password)
     driver.find_element(By.XPATH, "//input[@name='confirm_passwordRegisterPage']").send_keys(locators.new_password)
+    # driver.find_element(By.XPATH, "//input[@name='usernameRegisterPage']").send_keys('ZoyaSalehi')
+    # driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").send_keys('zoyasalehi@cctb.com')
+    # driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").send_keys('Pass1234')
+    # driver.find_element(By.XPATH, "//input[@name='confirm_passwordRegisterPage']").send_keys('Pass1234')
     driver.find_element(By.XPATH, "//input[@name='first_nameRegisterPage']").send_keys(locators.first_name)
     driver.find_element(By.XPATH, "//input[@name='last_nameRegisterPage']").send_keys(locators.last_name)
     driver.find_element(By.XPATH, "//input[@name='phone_numberRegisterPage']").send_keys(locators.phonenum)
@@ -62,9 +66,25 @@ def sign_up():
     driver.find_element(By.XPATH, "//input[@name='postal_codeRegisterPage']").send_keys(locators.zip_code)
     driver.find_element(By.XPATH, "//input[@name='i_agree']").click()
     driver.find_element(By.ID, "register_btnundefined").click()
-    sleep(0.5)
-    assert driver.find_element(By.LINK_TEXT, f"{locators.new_username}")
-    print("New User is successfully registered")
+
+    if driver.find_element(By.LINK_TEXT, f"{locators.new_username}").is_displayed():
+        print("New User is successfully registered")
+    else:
+        tearDown()
+
+
+    #print(driver.find_element(By.XPATH, "//label[@class ='center block smollMargin']").get_attribute('innerText'))
+
+    # if driver.find_element(By.XPATH, "//label[contains(. , '!registerSuccess')]").get_attribute('innerText') == '':
+    #
+    # if driver.find_element(By.XPATH, "//label[@class ='center block smollMargin']").get_attribute('innerText') == '':
+    #
+    #     while locators.counter < 3:
+    #         locators.counter =+ 1
+    #         sign_up()
+    #     print("Existing Username is entered 3 times, test is closed, check your code, try again")
+    #     tearDown()
+
 
 def check_full_name():
     print(f'-------------------------~*~--------------------------')
