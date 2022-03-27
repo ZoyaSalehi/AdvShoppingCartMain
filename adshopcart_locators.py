@@ -11,7 +11,13 @@ aos_register_URL = "https://advantageonlineshopping.com/#/register"
 new_username = fake.user_name()
 new_password = fake.password()
 email = fake.email()
-first_name = fake.first_name()
+
+init_first_name = fake.first_name()
+if len(init_first_name)>15:
+    first_name = init_first_name[:15:]
+else:
+    first_name = init_first_name
+
 last_name = fake.last_name()
 
 init_phonenum = fake.phone_number()
