@@ -14,6 +14,6 @@ class AdshopcartPositiveTests(unittest.TestCase):
         methods.check_full_name()
         methods.check_orders()
         methods.delete_test_account()
-        methods.log_out()
-        methods.log_in_invalid_user(locators.new_username, locators.new_password)
+        #methods.log_out()
+        methods.log_in_valid_user(locators.new_username, locators.new_password)
         methods.tearDown()

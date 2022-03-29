@@ -1,6 +1,7 @@
 import datetime
 
 import selenium
+#from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import Select  # <--- add this import for drop down lists
 from time import sleep
 from selenium import webdriver
@@ -11,6 +12,7 @@ import adshopcart_locators as locators
 
 s = Service(executable_path='../chromedriver.exe')
 driver = webdriver.Chrome(service=s)
+#actions = ActionChains(driver=driver)
 
 
 def setUp():
@@ -54,10 +56,7 @@ def sign_up():
     # driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").clear()
     # driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").clear()
     # driver.find_element(By.XPATH, "//input[@name='confirm_passwordRegisterPage']").clear()
-    # driver.find_element(By.XPATH, "//input[@name='usernameRegisterPage']").send_keys('ZoyaSalehi')
-    # driver.find_element(By.XPATH, "//input[@name='emailRegisterPage']").send_keys('zoyasalehi@cctb.com')
-    # driver.find_element(By.XPATH, "//input[@name='passwordRegisterPage']").send_keys('Pass1234')
-    # driver.find_element(By.XPATH, "//input[@name='confirm_passwordRegisterPage']").send_keys('Pass1234')
+
     driver.find_element(By.XPATH, "//input[@name='first_nameRegisterPage']").send_keys(locators.first_name)
     driver.find_element(By.XPATH, "//input[@name='last_nameRegisterPage']").send_keys(locators.last_name)
     driver.find_element(By.XPATH, "//input[@name='phone_numberRegisterPage']").send_keys(locators.phonenum)
@@ -105,13 +104,15 @@ def check_full_name():
     driver.find_element(By.ID, "menuUserLink").click()
     assert driver.find_element(By.ID, "loginMiniTitle").is_displayed()
     #Select(driver.find_element(By.ID, "loginMiniTitle")).select_by_value('My account')
-    driver.find_element(By.XPATH, "(//label[text()='My account'])[2]").click()
+    driver.find_element(By.XPATH, "//div[@id='loginMiniTitle']/label[text()='My account']").click()
+    #driver.find_element(By.XPATH, "(//label[text()='My account'])[2]").click()
     #assert driver.find_element(By.LINK_TEXT, "Account details").is_displayed()
     #fullname = (selenium.getText('//label[@class="ng-binding"][1]')).trim()
 
 
     assert driver.find_element(By.XPATH, "//div[@class='borderBox']//label")
     fullname = driver.find_element(By.XPATH, "//div[@class='borderBox']//label").get_attribute('innerText')
+    sleep(0.5)
     if locators.full_name == fullname:
         print("Yes, User's Fullname, ie. {locators.full_name} is correctly captured in the Accounts Details")
     #if driver.find_element(By.XPATH, f"//label[normalize - space(text()) = '{locators.full_name}']"):
@@ -126,6 +127,7 @@ def check_orders():
     driver.find_element(By.ID, "menuUserLink").click()
     assert driver.find_element(By.ID, "loginMiniTitle").is_displayed()
     driver.find_element(By.XPATH, "(// label[text() = 'My orders'])[2]").click()
+    sleep(0.5)
 
     assert driver.find_element(By.XPATH, "//label[text()=' - No orders - ']")
 
@@ -135,13 +137,16 @@ def check_orders():
 def log_out():
     print(f'-------------------------~*~--------------------------')
     print("Trying to log out")
+    sleep(1)
 
     driver.find_element(By.ID, "menuUserLink").click()
     assert driver.find_element(By.ID, "loginMiniTitle").is_displayed()
+    sleep(1)
     driver.find_element(By.XPATH, "(// label[@ translate='Sign_out'])[2]").click()
     sleep(0.5)
     assert driver.find_element(By.XPATH, "//span[@class='hi-user containMiniTitle ng-binding ng-hide']").get_attribute('innerText') == ''
     print("user successfully logged out")
+
 
 def delete_test_account():
     print(f'-------------------------~*~--------------------------')
@@ -150,13 +155,22 @@ def delete_test_account():
     sleep(0.5)
     assert driver.find_element(By.ID, "loginMiniTitle").is_displayed()
     driver.find_element(By.XPATH, "(//label[text()='My account'])[2]").click()
-    driver.find_element(By.XPATH, "//div[contains(., 'Delete Account')]").click()
+    driver.execute_script("window.scrollBy(0, 1000);")
+    sleep(2)
+    driver.find_element(By.CLASS_NAME, "deleteBtnText").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "//div[@class='deletePopupBtn deleteRed']").click()
+    sleep(5)
+    assert driver.find_element(By.XPATH, "//span[@class='hi-user containMiniTitle ng-binding ng-hide']").get_attribute(
+        'innerText') == ''
     print("User's Account is successfully deleted")
+
 
 
 def log_in_valid_user(username, password):
     print(f'-------------------------~*~--------------------------')
-    print("Trying gto login with valid username and password")
+    print("Trying to login with username and password")
+    sleep(1)
     driver.find_element(By.ID, "menuUser").click()
     sleep(1)
     print("The sign-in window pops up")
@@ -165,26 +179,44 @@ def log_in_valid_user(username, password):
         sleep(1)
     driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username)
     driver.find_element(By.XPATH, "//input[@name='password']").send_keys(password)
-    driver.find_element(By.XPATH, "//button[text()='SIGN IN']").click()
-    assert driver.find_element(By.LINK_TEXT, f"{username}")
-    print("Valid username and password is successfully logged in")
-
-
-def log_in_invalid_user(username, password):
-    print(f'-------------------------~*~--------------------------')
-    print("Trying gto login with invalid username or password")
-    driver.find_element(By.ID, "menuUser").click()
     sleep(1)
-    print("The sign-in window pops up")
-    if driver.find_element(By.XPATH, '//div[contains(@class, "login ng-scope")]').is_displayed():
-        print("we r on pop window")
-        sleep(1)
-    driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username)
-    driver.find_element(By.XPATH, "//input[@name='password']").send_keys(password)
     driver.find_element(By.XPATH, "//button[text()='SIGN IN']").click()
     sleep(1)
-    assert driver.find_element(By.ID, "signInResultMessage")
-    print("Invalid username or password is successfully detected, not allowed to sign in")
+
+    if driver.find_element(By.XPATH, '//label[@id = "signInResultMessage"]').text == 'Incorrect user name or password.':
+        print("Invalid username or password is successfully detected, not allowed to sign in")
+        print(driver.find_element(By.XPATH, '//label[@id = "signInResultMessage"]').text)
+    else:
+        assert driver.find_element(By.LINK_TEXT, f"{username}")
+        print("Valid username and password is successfully logged in")
+        print(driver.find_element(By.XPATH, '//label[@id = "signInResultMessage"]').text)
+
+
+# def log_in_invalid_user(username, password):
+#     print(f'-------------------------~*~--------------------------')
+#     print("Trying to login with invalid username or password")
+#     driver.find_element(By.ID, "menuUser").click()
+#     sleep(1)
+#     print("The sign-in window pops up")
+#     if driver.find_element(By.XPATH, '//div[contains(@class, "login ng-scope")]').is_displayed():
+#         print("we r on pop window")
+#         sleep(1)
+
+    #driver.find_element(By.XPATH, "//input[@name='username']").send_keys('dehhd')
+
+    #driver.find_element(By.XPATH, "//input[@name='password']").send_keys('oweyh7')
+
+    # driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username)
+    # sleep(0.5)
+    # driver.find_element(By.XPATH, "//input[@name='password']").send_keys(password)
+    # sleep(0.5)
+    # driver.find_element(By.XPATH, "//button[text()='SIGN IN']").click()
+    # sleep(1)
+    # #assert driver.find_element(By.ID, "signInResultMessage").text == "Incorrect user name or password."
+    # if driver.find_element(By.XPATH, '//label[@id = "signInResultMessage"]').text == 'Incorrect user name or password.':
+
+        #print (driver.find_element(By.XPATH, '//label[@id = "signInResultMessage"]').text)
+    #    print("Invalid username or password is successfully detected, not allowed to sign in")
 
 def tearDown():
     if driver is not None:
