@@ -1,6 +1,6 @@
 import datetime
 
-import selenium
+#import selenium
 #from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import Select  # <--- add this import for drop down lists
 from time import sleep
@@ -27,7 +27,7 @@ def setUp():
     if driver.current_url == locators.aos_URL and driver.title == locators.aos_homepage_title:
         print(f'Yey! {locators.app} App website launched successfully!')
         print(f'{locators.app} Homepage URL: {driver.current_url}, Homepage title: {driver.title}')
-        sleep(0.25)
+        sleep(0.5)
     else:
         print(f'{locators.app} did not launch. Check your code or application!')
         print(f'Current URL: {driver.current_url}, Page title: {driver.title}')
@@ -218,6 +218,44 @@ def log_in_valid_user(username, password):
         #print (driver.find_element(By.XPATH, '//label[@id = "signInResultMessage"]').text)
     #    print("Invalid username or password is successfully detected, not allowed to sign in")
 
+
+def check_homepage():
+    print(f'-------------------------~*~--------------------------')
+    print("Confirming home page")
+    assert driver.current_url == locators.aos_URL and driver.title == locators.aos_homepage_title
+    items = ["speakersTxt", "tabletsTxt", "headphonesTxt", "laptopsTxt", "miceTxt"]
+    sleep(1)
+
+    for item in items:
+        #assert driver.find_element(By.ID, f"{item}").is_displayed()
+        print(driver.find_element(By.XPATH, f"//span[@id = '{item}']").text)
+        sleep(0.25)
+
+    print("Test if menu items are clickable")
+    menu_links = ["OUR PRODUCTS", "SPECIAL OFFER", "POPULAR ITEMS", "CONTACT US"]
+    for link in menu_links:
+        driver.find_element(By.LINK_TEXT, f"{link}").click()
+        print(link)
+        sleep(1)
+
+    print("Start filling out the Contact Us form")
+    driver.find_element(By.LINK_TEXT, "CONTACT US").click()
+    sleep(1)
+    Select(driver.find_element(By.XPATH, "//select[@name = 'categoryListboxContactUs']")).select_by_index(1)
+    sleep(0.5)
+    Select(driver.find_element(By.XPATH, "//select[@name = 'productListboxContactUs']")).select_by_index(1)
+    sleep(0.5)
+    driver.find_element(By.NAME, "emailContactUs").send_keys(locators.email)
+    sleep(0.5)
+    driver.find_element(By.NAME, "subjectTextareaContactUs").send_keys(locators.description)
+    sleep(0.5)
+    driver.find_element(By.ID, "send_btnundefined").click()
+    sleep(1)
+    if driver.find_element(By.LINK_TEXT, "CONTINUE SHOPPING").is_displayed():
+        print("The Contact Us form works properly.")
+
+
+
 def tearDown():
     if driver is not None:
         print(f'-------------------------~*~--------------------------')
@@ -226,7 +264,8 @@ def tearDown():
         driver.close()
         driver.quit()
 
-# setUp()
+#setUp()
+#check_homepage()
 # sign_up()
 # log_out()
 # log_in_valid_user(locators.new_username, locators.new_password)
@@ -235,4 +274,4 @@ def tearDown():
 # delete_test_account()
 # log_out()
 # log_in_invalid_user(locators.new_username, locators.new_password)
-# tearDown()
+#tearDown()

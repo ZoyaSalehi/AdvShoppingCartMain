@@ -8,6 +8,7 @@ class AdshopcartPositiveTests(unittest.TestCase):
     @staticmethod
     def test_AOS():
         methods.setUp()
+        methods.check_homepage()
         methods.sign_up()
         methods.log_out()
         methods.log_in_valid_user(locators.new_username, locators.new_password)

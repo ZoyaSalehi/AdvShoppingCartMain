@@ -45,3 +45,5 @@ else:
 
 zip_code = fake.zipcode()
 counter = 0
+
+description = fake.sentence(nb_words=10)
