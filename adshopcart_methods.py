@@ -102,9 +102,11 @@ def check_full_name():
     print('-------------------------~*~--------------------------')
     print(f"Confirm if the user's Fullname, ie. {locators.full_name} is correctly captured in the Accounts Details")
     driver.find_element(By.ID, "menuUserLink").click()
+    sleep(0.5)
     assert driver.find_element(By.ID, "loginMiniTitle").is_displayed()
     #Select(driver.find_element(By.ID, "loginMiniTitle")).select_by_value('My account')
     driver.find_element(By.XPATH, "//div[@id='loginMiniTitle']/label[text()='My account']").click()
+    sleep(0.5)
     #driver.find_element(By.XPATH, "(//label[text()='My account'])[2]").click()
     #assert driver.find_element(By.LINK_TEXT, "Account details").is_displayed()
     #fullname = (selenium.getText('//label[@class="ng-binding"][1]')).trim()
@@ -114,7 +116,7 @@ def check_full_name():
     fullname = driver.find_element(By.XPATH, "//div[@class='borderBox']//label").get_attribute('innerText')
     sleep(0.5)
     if locators.full_name == fullname:
-        print("Yes, User's Fullname, ie. {locators.full_name} is correctly captured in the Accounts Details")
+        print(f"Yes, User's Fullname, ie. {locators.full_name} is correctly captured in the Accounts Details")
     #if driver.find_element(By.XPATH, f"//label[normalize - space(text()) = '{locators.full_name}']"):
     # if driver.find_element(By.XPATH, "//label[text()[normalize-space()='Zoya Salehi']]"):
     #     print("Full name is found in My Account")
